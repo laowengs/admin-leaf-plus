@@ -75,6 +75,51 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.44.0</version>
+				<configuration>
+					<dockerHost>tcp://docker.host:2375</dockerHost>
+					<pushRegistry>http://nexus-svc.dev.svc.cluster.local:8082</pushRegistry>
+					<images>
+						<image>
+							<!-- 指定image的名字（包含registry地址）-->
+							<name>nexus-svc.dev.svc.cluster.local:8082/${project.name}:${project.version}</name>
+							<!-- 别名为master，不关键-->
+							<alias>${project.name}</alias>
+							<build>
+								<!-- 指定dockerfile文件的位置-->
+								<dockerFile>${project.basedir}/Dockerfile</dockerFile>
+<!--								<buildOptions>-->
+<!--									&lt;!&ndash; 网络的配置，与宿主主机共端口号&ndash;&gt;-->
+<!--									<network>host</network>-->
+<!--								</buildOptions>-->
+								<tags>
+									<tag>${project.version}</tag>
+								</tags>
+							</build>
+						</image>
+					</images>
+					<authConfig>
+						<!-- registry服务的认证-->
+						<username>admin</username>
+						<password>Iweng.me2295</password>
+					</authConfig>
+				</configuration>
+
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>docker-exec</id>-->
+<!--						&lt;!&ndash; 绑定mvn install阶段，当执行mvn install时 就会执行docker build 和docker push&ndash;&gt;-->
+<!--						<phase>install</phase>-->
+<!--						<goals>-->
+<!--							<goal>build</goal>-->
+<!--							<goal>push</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+			</plugin>
 		</plugins>
 	</build>
 
